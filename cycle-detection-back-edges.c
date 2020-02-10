@@ -7,34 +7,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX 10000
 #define init 1
 #define wait 2
 #define visi 3
 
 int cycle = 0;
-int stack[MAX];
-int top = -1;
-void push(int item) {
-    top++;
-    stack[top] = item;
-}
-int pop() {
-    int item = stack[top];
-    top--;
-    return item;
-}
-int peek() {
-    return stack[top];
-}
-int stackEmpty() {
-    if (top==-1) {
-        return 1;
-	}
-    else {
-        return 0;
-	}
-}
+
 //returns 1 if there is a cycle
 void DFS(int n, int adj[n][n], int state[n], int v) {
     int i;
