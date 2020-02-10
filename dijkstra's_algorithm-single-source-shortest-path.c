@@ -9,7 +9,7 @@
 #define MAX 10000
 #define init 1
 #define visi 2
-#define infi 999
+#define infi 999999
 
 int minimum(int n, int dist[n], int state[n]) {
     int min = infi;
@@ -37,15 +37,17 @@ void Dijkstra(int n, int adj[n][n], int dist[n], int state[n], int v) {
             }
         }
         for (i=0; i<n; i++) {
-            if (state[i] == init)
+            if (state[i] == init) {
                 flag=0;
+                break;
+            }
             else
                 flag=1;
         }
         if (flag == 1)
             break;
     }
-    
+   
 }
 
 int main() {
@@ -66,8 +68,10 @@ int main() {
     //nodes are from 1 to N
     for (i=0; i<edge; i++) {
         scanf("%d %d %d", &origin, &dest, &dis);
-        adj[origin-1][dest-1] = dis;
-        adj[dest-1][origin-1] = dis;
+        if (adj[origin-1][dest-1] > dis) {
+            adj[origin-1][dest-1] = dis;
+            adj[dest-1][origin-1] = dis;
+        }
     }
     for (i=0; i<n; i++) {
         state[i]=init;
@@ -83,15 +87,21 @@ int main() {
         else
             dist[i] = infi;
     }
-    
+   
     state[v] = visi;
     Dijkstra(n, adj, dist, state, v);
 
     for (i=0; i<n; i++) {
-        if (dist[i]!=0)
+        if (dist[i] == infi) {
+            dist[i] = -1;
+        }
+    }
+
+    for (i=0; i<n; i++) {
+        if (dist[i]!=0) {
             printf("%d ", dist[i]);
+        }
     }
 
     return 0;
 }
-
