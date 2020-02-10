@@ -12,6 +12,7 @@
 #define wait 2
 #define visi 3
 
+int cycle = 0;
 int stack[MAX];
 int top = -1;
 void push(int item) {
@@ -35,27 +36,20 @@ int stackEmpty() {
 	}
 }
 //returns 1 if there is a cycle
-int DFS(int n, int adj[n][n], int state[n], int v) {
+void DFS(int n, int adj[n][n], int state[n], int v) {
     int i;
-    push(v);
     state[v] = wait;
-    while(!stackEmpty()) {
-		v = pop();
-		if (state[v]==init) {
-			//printf("%d ", v+1); //printing DFS
-			state[v] = visi;
-		}
-		for (i=0; i<n; i++) {
-			if (adj[v][i]==1 && state[i]==init) {
-				push(i);
-                state[v] = wait;
-            }
-            if (adj[v][i]==1 && state[i]==wait)
-                return 1;
-		}
+    for (i=0; i<n; i++) {
+        if (adj[v][i]==1 && state[i]==wait) {
+            cycle = 1;
+        }
+        if (adj[v][i]==1 && state[i]==init) {
+            DFS(n, adj, state, i);
+        }
     }
-    return 0;
+    state[v] = visi;
 }
+
 int main() {
     int n; //no. of vertices
     int i, j, edge, origin, dest;
@@ -76,10 +70,21 @@ int main() {
         state[i]=init;
     }
     
-    if (DFS(n, adj, state, 0) == 1) //0 being the start point
+    for (i=0; i<n; i++) {
+        if (state[i] == init) {
+            DFS(n, adj, state, i);
+        }
+    }
+
+    if (cycle == 1) {
         printf("YES");
-    else
+    }
+    else {
         printf("NO");
+    }
+
+    
     return 0;
 }
+
 
