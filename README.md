@@ -1,2 +1,2 @@
-# graph-algorithms
-These are just some graph problems solved using C programming language.
+# algorithms
+These are just some problems solved using C programming language.
